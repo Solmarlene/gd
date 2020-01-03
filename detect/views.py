@@ -13,10 +13,33 @@ def index(request):
     ''')
 
 
+def format_gender(dr):
+    parts = dr.split("|")
+    pretty_gender = None
+    for part in parts:
+        if "Gender" in part:
+            short_gender = part.split("=")[1]
+            if short_gender == "Fem":
+                pretty_gender = "Feminine"
+            else:
+                pretty_gender = "Masculine"
+    return pretty_gender
+
+
 def detect(request):
     user_word = request.GET['word']
 
     gender_detection_result = detect_gender(user_word)
+
+    format_gender(gender_detection_result)
+
+
+
+#def detect(request):
+#    user_word = request.GET['word']
+
+#    gender_detection_result = detect_gender(user_word)
+
 
     # "BLAHBLAHBLAH_Gender=Masc|BLAHBLAHBLAH"
     # 1. Check whether substring “Gender” appears at all
@@ -30,4 +53,4 @@ def detect(request):
     # And in all other cases, return “could not detect gender”.
     # TIP: use if/elif/else conditionals
 
-    return HttpResponse(gender_detection_result)
+    return HttpResponse(format_gender(gender_detection_result))
