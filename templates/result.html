@@ -4,15 +4,38 @@
     <h1>
         Result
     </h1>
-    <p class="complete-result">
-        The gender of “{{ word_in_question }}” is:
 
-        <span class="result-gender">
-            {{ gender_detection_result | lower }}
-        </span>
-    </p>
-    <p>
-        Want to check
-        <a href="/">another word</a>?
-    </p>
+    {% if error %}
+        <p class="error-message">
+            {{ error }}
+        </p>
+        <p>
+            Want to go
+            <a href="/">back and try again</a>?
+        </p>
+
+    {% elif gender_detection_result %}
+        <p class="complete-result">
+            The gender of “{{ word_in_question }}” is:
+
+            <span class="result-gender">
+                {{ gender_detection_result | lower }}
+            </span>
+        </p>
+        <p>
+            Want to check
+            <a href="/">another word</a>?
+        </p>
+
+    {% else %}
+        <p class="complete-result">
+            Whoops! We&nbsp;were&nbsp;not&nbsp;able
+            to&nbsp;detect the&nbsp;gender of&nbsp;“{{ word_in_question }}”.
+            Which&nbsp;is&nbsp;kind&nbsp;of&nbsp;sad.
+        </p>
+        <p>
+            Want to check
+            <a href="/">another word</a>?
+        </p>
+    {% endif %}
 {% endblock %}

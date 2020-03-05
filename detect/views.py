@@ -24,34 +24,35 @@ def format_gender(dr):
 
 
 def detect(request):
-    user_word = request.GET['word']
+    user_word = request.GET['word'].strip()
 
-    gender_detection_result = detect_gender(user_word)
+    if user_word != '':
+        gender_detection_result = detect_gender(user_word)
 
-    format_gender(gender_detection_result)
+        # "BLAHBLAHBLAH_Gender=Masc|BLAHBLAHBLAH"
+        # 1. Check whether substring “Gender” appears at all
+        # TIP: use gender_detection_result.find()
 
+        # 2. If it appears, take part after the “=” until the “|”
+        # TIP: try using string replacement or regexp (regular expression) matching
 
+        # 3. If that part is “Masc”, then return “this word is of masculine gender”.
+        # If it is “Fem”, return “this word is of feminine gender”.
+        # And in all other cases, return “could not detect gender”.
+        # TIP: use if/elif/else conditionals
 
-    # "BLAHBLAHBLAH_Gender=Masc|BLAHBLAHBLAH"
-    # 1. Check whether substring “Gender” appears at all
-    # TIP: use gender_detection_result.find()
+        result_string = format_gender(gender_detection_result)
 
-    # 2. If it appears, take part after the “=” until the “|”
-    # TIP: try using string replacement or regexp (regular expression) matching
+        context = {
+            'word_in_question': user_word,
+            'gender_detection_result': result_string,
+        }
 
-    # 3. If that part is “Masc”, then return “this word is of masculine gender”.
-    # If it is “Fem”, return “this word is of feminine gender”.
-    # And in all other cases, return “could not detect gender”.
-    # TIP: use if/elif/else conditionals
-
-    result_string = format_gender(gender_detection_result)
+    else:
+        context = {
+            'error': "Whoops! You didn’t enter anything, it appears D:"
+        }
 
     template = loader.get_template('result.html')
-
-    context = {
-        'word_in_question': user_word,
-        'gender_detection_result': result_string,
-    }
-
     final_html = template.render(context, request)
     return HttpResponse(final_html)
