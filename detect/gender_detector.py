@@ -1,7 +1,7 @@
 import spacy
 
 
-processor = spacy.load('es_core_news_sm')
+processor = spacy.load('es_core_news_md')
 
 
 def detect_gender(text):
