@@ -35,12 +35,6 @@ def detect(request):
 
 
 
-#def detect(request):
-#    user_word = request.GET['word']
-
-#    gender_detection_result = detect_gender(user_word)
-
-
     # "BLAHBLAHBLAH_Gender=Masc|BLAHBLAHBLAH"
     # 1. Check whether substring “Gender” appears at all
     # TIP: use gender_detection_result.find()
