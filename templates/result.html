@@ -2,6 +2,17 @@
 
 {% block content %}
     <h1>
-        {{ gender_detection_result }}
+        Result
     </h1>
+    <p class="complete-result">
+        The gender of “{{ word_in_question }}” is:
+
+        <span class="result-gender">
+            {{ gender_detection_result | lower }}
+        </span>
+    </p>
+    <p>
+        Want to check
+        <a href="/">another word</a>?
+    </p>
 {% endblock %}

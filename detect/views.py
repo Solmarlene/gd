@@ -49,6 +49,7 @@ def detect(request):
     template = loader.get_template('result.html')
 
     context = {
+        'word_in_question': user_word,
         'gender_detection_result': result_string,
     }
 
