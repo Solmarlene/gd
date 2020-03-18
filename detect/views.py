@@ -1,13 +1,18 @@
 from django.http import HttpResponse
 from django.template import loader
 from genders.models import Entry
-
+import random
 from .gender_detector import detect_gender
 
 
 def index(request):
     template = loader.get_template('home.html')
-    final_html = template.render({}, request)
+    blob_color = "%06x" % random.randint(0, 0xFFFFFF)
+    final_html = template.render(
+        {
+            'blob_color': blob_color,
+        },
+        request)
     return HttpResponse(final_html)
 
 

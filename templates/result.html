@@ -1,15 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>
-        Result
-    </h1>
-
+    
     {% if error %}
         <p class="error-message">
             {{ error }}
         </p>
-        <p>
+        <p class="try-again">
             Want to go
             <a href="/">back and try again</a>?
         </p>
@@ -22,7 +19,7 @@
                 {{ gender_detection_result | lower }}
             </span>
         </p>
-        <p>
+        <p class="try-again">
             Want to check
             <a href="/">another word</a>?
         </p>
@@ -33,7 +30,7 @@
             to&nbsp;detect the&nbsp;gender of&nbsp;“{{ word_in_question }}”.
             Which&nbsp;is&nbsp;kind&nbsp;of&nbsp;sad.
         </p>
-        <p>
+        <p class="try-again">
             Want to check
             <a href="/">another word</a>?
         </p>
