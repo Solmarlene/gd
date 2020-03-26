@@ -25,7 +25,7 @@ SECRET_KEY = 'gq-#c+%&%os4_!(&ra8_ogq67k86qbguhuqcb7td0uiurk1fs$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['findthegender.com']
 
 
 # Application definition
