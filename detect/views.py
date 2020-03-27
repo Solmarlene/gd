@@ -1,12 +1,18 @@
 from django.http import HttpResponse
 from django.template import loader
-
+from genders.models import Entry
+import random
 from .gender_detector import detect_gender
 
 
 def index(request):
     template = loader.get_template('home.html')
-    final_html = template.render({}, request)
+    blob_color = "%06x" % random.randint(0, 0xFFFFFF)
+    final_html = template.render(
+        {
+            'blob_color': blob_color,
+        },
+        request)
     return HttpResponse(final_html)
 
 
@@ -27,21 +33,42 @@ def detect(request):
     user_word = request.GET['word'].strip()
 
     if user_word != '':
-        gender_detection_result = detect_gender(user_word)
+        genders = Entry.objects.filter(word=user_word).values_list('gender', flat=True)
 
-        # "BLAHBLAHBLAH_Gender=Masc|BLAHBLAHBLAH"
-        # 1. Check whether substring “Gender” appears at all
-        # TIP: use gender_detection_result.find()
+        if len(genders) < 1:
+            gender_detection_result = detect_gender(user_word)
 
-        # 2. If it appears, take part after the “=” until the “|”
-        # TIP: try using string replacement or regexp (regular expression) matching
+            # "BLAHBLAHBLAH_Gender=Masc|BLAHBLAHBLAH"
+            # 1. Check whether substring “Gender” appears at all
+            # TIP: use gender_detection_result.find()
 
-        # 3. If that part is “Masc”, then return “this word is of masculine gender”.
-        # If it is “Fem”, return “this word is of feminine gender”.
-        # And in all other cases, return “could not detect gender”.
-        # TIP: use if/elif/else conditionals
+            # 2. If it appears, take part after the “=” until the “|”
+            # TIP: try using string replacement or regexp (regular expression) matching
 
-        result_string = format_gender(gender_detection_result)
+            # 3. If that part is “Masc”, then return “this word is of masculine gender”.
+            # If it is “Fem”, return “this word is of feminine gender”.
+            # And in all other cases, return “could not detect gender”.
+            # TIP: use if/elif/else conditionals
+
+            result_string = format_gender(gender_detection_result)
+
+        elif len(genders) == 1:
+            gender = genders[0]
+            if gender == "M":
+                result_string = "Masculine"
+            elif gender == "F":
+                result_string = "Feminine"
+            else:
+                result_string = "Both"
+        else:
+            print(genders)
+            if 'B' in genders or ('F' in genders and 'M' in genders):
+                result_string = "Both"
+            elif 'F' in genders:
+                result_string = "Feminine"
+            else:
+                result_string = "Masculine"
+                
 
         context = {
             'word_in_question': user_word,
