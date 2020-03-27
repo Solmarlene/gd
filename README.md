@@ -1,28 +1,28 @@
 ## Deployment
 
-Following steps presume Ubuntu 18.
+Following steps presume vanilla AWS Ubuntu 18.
 
 ### Install pre-requisites
 
-```
-sudo apt-get update
-sudo apt install python3-pip nginx gunicorn3
-pip3 install Django spacy
-python3 -m spacy download es_core_news_md
+```console
+ubuntu@host:~$ sudo apt-get update
+ubuntu@host:~$ sudo apt install python3-pip nginx gunicorn3
+ubuntu@host:~$ pip3 install Django spacy
+ubuntu@host:~$ python3 -m spacy download es_core_news_md
 ```
 
 
 ### Get source code
 
-```
-git clone https://github.com/Solmarlene/gd 
+```console
+ubuntu@host:~$ git clone https://github.com/Solmarlene/gd 
 # Edit gd/gd/settings.py to specify a long and unique SECRET_KEY and correct ALLOWED_HOSTS.
 ```
 
 
 ### Provide configuration files
 
-```
+```ini
 # In /etc/systemd/system/gunicorn.service:
 [Unit]
 Description=gunicorn daemon
@@ -46,7 +46,7 @@ PrivateTmp=true
 WantedBy=multi-user.target
 ```
 
-```
+```ini
 # In /etc/systemd/system/gunicorn.socket:
 [Unit]
 Description=gunicorn socket
@@ -60,7 +60,7 @@ User=www-data
 WantedBy=sockets.target
 ```
 
-```
+```nginx
 # In /etc/nginx/nginx/conf:
 worker_processes 1;
 
@@ -116,8 +116,8 @@ http {
 
 ### Reload services
 
-```
-sudo systemctl daemon-reload
-sudo service nginx restart
-sudo service gunicorn start
+```console
+ubuntu@host:~$ sudo systemctl daemon-reload
+ubuntu@host:~$ sudo service nginx restart
+ubuntu@host:~$ sudo service gunicorn start
 ```
